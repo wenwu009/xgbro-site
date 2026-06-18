@@ -1,21 +1,25 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>XGbro AI - 海外华人商家获客自动化</title>
-  <meta name="description" content="XGbro AI 帮海外华人本地服务商搭建询盘捕获、客户跟进和 AI 回复流程，支持人民币结算。">
+  <title>XGbro AI - 海外华人商家客户跟进自动化</title>
+  <meta name="description" content="XGbro AI 帮海外华人本地服务商搭建网站在线咨询、Gmail 自动回复、客户跟进表和中英文话术流程，支持人民币结算。">
   <style>
     :root {
       --ink: #17211b;
       --muted: #5b665f;
       --line: #dfe7df;
-      --paper: #f7f8f4;
+      --paper: #f6f2ea;
+      --paper-2: #fffaf1;
       --accent: #0f7b63;
-      --accent-2: #b45f28;
+      --accent-dark: #075d4b;
+      --copper: #b45f28;
       --white: #ffffff;
+      --shadow: 0 18px 50px rgba(23, 33, 27, 0.16);
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: Arial, "Microsoft YaHei", sans-serif;
@@ -23,47 +27,92 @@
       background: var(--paper);
       line-height: 1.6;
     }
-    header, section, footer {
-      padding: 56px 20px;
-    }
-    .wrap {
-      max-width: 1080px;
-      margin: 0 auto;
-    }
+    a { color: inherit; }
     nav {
+      position: sticky;
+      top: 0;
+      z-index: 12;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--line);
-      background: var(--white);
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 28px;
+      background: rgba(246, 242, 234, 0.94);
+      border-bottom: 1px solid rgba(23, 33, 27, 0.1);
+      backdrop-filter: blur(14px);
     }
     .brand {
       font-size: 20px;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: 0;
     }
-    .nav-actions {
+    .nav-links {
       display: flex;
-      gap: 10px;
+      gap: 18px;
       align-items: center;
       color: var(--muted);
       font-size: 14px;
     }
+    .nav-links a {
+      text-decoration: none;
+    }
+    .nav-cta {
+      padding: 9px 14px;
+      border-radius: 6px;
+      background: var(--ink);
+      color: var(--white);
+      font-weight: 700;
+    }
     .hero {
-      background: linear-gradient(180deg, #ffffff 0%, #eef5ed 100%);
-      border-bottom: 1px solid var(--line);
+      min-height: 78vh;
+      display: flex;
+      align-items: flex-end;
+      color: var(--white);
+      background:
+        linear-gradient(90deg, rgba(12, 24, 18, 0.92) 0%, rgba(12, 24, 18, 0.76) 42%, rgba(12, 24, 18, 0.12) 100%),
+        url("hero-dashboard.jpg") center right / cover no-repeat;
+      border-bottom: 1px solid rgba(23, 33, 27, 0.15);
+    }
+    .wrap {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+    .hero-inner {
+      padding: 92px 0 76px;
+      max-width: 760px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 18px;
+      color: #d8f0e8;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .eyebrow:before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #60d6aa;
     }
     h1 {
-      max-width: 860px;
       margin: 0 0 18px;
-      font-size: clamp(34px, 6vw, 68px);
-      line-height: 1.06;
+      font-size: clamp(38px, 6vw, 72px);
+      line-height: 1.04;
       letter-spacing: 0;
     }
     h2 {
-      font-size: 30px;
-      line-height: 1.2;
-      margin: 0 0 18px;
+      margin: 0 0 16px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+    h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      line-height: 1.25;
     }
     p {
       margin: 0 0 14px;
@@ -71,78 +120,223 @@
       font-size: 17px;
     }
     .hero p {
-      max-width: 720px;
-      font-size: 20px;
+      max-width: 670px;
+      color: #edf3ee;
+      font-size: 21px;
     }
     .actions {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 26px;
+      margin-top: 28px;
     }
-    a.button {
+    .button {
       display: inline-flex;
+      min-height: 48px;
       align-items: center;
       justify-content: center;
-      min-height: 44px;
-      padding: 10px 18px;
+      padding: 11px 18px;
+      border: 1px solid transparent;
       border-radius: 6px;
       text-decoration: none;
-      font-weight: 700;
-      border: 1px solid var(--accent);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .button.primary {
       background: var(--accent);
       color: var(--white);
     }
-    a.button.secondary {
-      background: transparent;
-      color: var(--accent);
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink);
     }
-    .grid {
+    .trust-strip {
+      margin-top: -42px;
+      position: relative;
+      z-index: 3;
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      background: var(--paper-2);
+      border: 1px solid #e6dcc8;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .trust-item {
+      padding: 22px 24px;
+      border-right: 1px solid #e6dcc8;
+    }
+    .trust-item:last-child { border-right: 0; }
+    .trust-item strong {
+      display: block;
+      color: var(--ink);
+      font-size: 26px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .trust-item span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    section {
+      padding: 86px 0;
+    }
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 34px;
+    }
+    .kicker {
+      margin-bottom: 8px;
+      color: var(--copper);
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .grid-3 {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
+      gap: 18px;
     }
     .card {
       background: var(--white);
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 22px;
+      padding: 26px;
+      box-shadow: 0 8px 24px rgba(23, 33, 27, 0.06);
     }
-    .card strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 18px;
+    .card .mark {
+      width: 42px;
+      height: 42px;
+      margin-bottom: 18px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: #e5f2ed;
+      color: var(--accent-dark);
+      font-weight: 900;
+    }
+    .band {
+      background: var(--white);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .workflow {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+      gap: 42px;
+      align-items: center;
+    }
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 18px;
+      background: #fbfcfa;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .step-num {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--ink);
+      color: var(--white);
+      font-weight: 800;
+    }
+    .panel {
+      padding: 24px;
+      background: #16221b;
+      border-radius: 8px;
+      color: var(--white);
+      box-shadow: var(--shadow);
+    }
+    .lead-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+    }
+    .lead-row span {
+      color: #d9e5de;
+      font-size: 14px;
+    }
+    .pill {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: #e6c58d;
+      color: #17211b;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
     }
     .price {
-      color: var(--accent-2);
-      font-size: 28px;
-      font-weight: 700;
       margin: 8px 0 12px;
+      color: var(--copper);
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1;
+    }
+    ul {
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+    }
+    li {
+      position: relative;
+      margin: 10px 0;
+      padding-left: 22px;
+    }
+    li:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
     }
     .intake {
       display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
-      gap: 28px;
+      grid-template-columns: minmax(0, 0.85fr) minmax(340px, 1.15fr);
+      gap: 38px;
       align-items: start;
     }
     form {
       background: var(--white);
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 22px;
+      padding: 26px;
+      box-shadow: var(--shadow);
     }
     label {
       display: block;
-      margin: 0 0 6px;
+      margin: 0 0 7px;
       color: var(--ink);
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
     }
     input, textarea, select {
       width: 100%;
       margin: 0 0 14px;
-      padding: 11px 12px;
-      border: 1px solid #c9d5cc;
+      padding: 12px 13px;
+      border: 1px solid #c8d5cc;
       border-radius: 6px;
       color: var(--ink);
       background: #fbfcfa;
@@ -154,32 +348,42 @@
     }
     .submit {
       width: 100%;
-      min-height: 46px;
+      min-height: 48px;
       border: 0;
       border-radius: 6px;
       background: var(--accent);
       color: var(--white);
-      font-weight: 700;
+      font-weight: 900;
       font-size: 16px;
       cursor: pointer;
     }
     .fine-print {
       margin-top: 10px;
-      font-size: 13px;
       color: var(--muted);
+      font-size: 13px;
+    }
+    footer {
+      padding: 70px 0 96px;
+      background: var(--ink);
+      color: var(--white);
+    }
+    footer p { color: #d7ddd8; }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 28px;
+      align-items: end;
     }
     .pay-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 180px));
-      gap: 16px;
-      margin-top: 22px;
+      grid-template-columns: repeat(2, 150px);
+      gap: 14px;
     }
     .pay-card {
+      padding: 10px;
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.16);
       border-radius: 8px;
-      padding: 12px;
-      max-width: 180px;
     }
     .pay-card img {
       display: block;
@@ -190,71 +394,32 @@
     }
     .pay-card span {
       display: block;
-      margin-top: 8px;
+      margin-top: 7px;
       color: #eef5ed;
-      font-size: 14px;
+      font-size: 13px;
       text-align: center;
     }
-    ul {
-      margin: 14px 0 0;
-      padding-left: 20px;
-      color: var(--muted);
-    }
-    li { margin: 8px 0; }
-    .band {
-      background: var(--white);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-    .steps {
-      counter-reset: step;
-    }
-    .step {
-      display: grid;
-      grid-template-columns: 44px 1fr;
-      gap: 14px;
-      padding: 18px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .step:last-child { border-bottom: 0; }
-    .step:before {
-      counter-increment: step;
-      content: counter(step);
-      display: grid;
-      place-items: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #dbeee7;
-      color: var(--accent);
-      font-weight: 700;
-    }
-    footer {
-      background: var(--ink);
-      color: var(--white);
-    }
-    footer p { color: #d7ddd8; }
     .chat-widget {
       position: fixed;
       right: 18px;
       bottom: 18px;
-      width: min(360px, calc(100vw - 36px));
+      width: min(370px, calc(100vw - 36px));
+      z-index: 20;
+      overflow: hidden;
       background: var(--white);
       border: 1px solid var(--line);
       border-radius: 8px;
-      box-shadow: 0 18px 50px rgba(23, 33, 27, 0.18);
-      overflow: hidden;
-      z-index: 20;
+      box-shadow: 0 18px 50px rgba(23, 33, 27, 0.22);
     }
     .chat-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
-      padding: 12px 14px;
+      padding: 13px 15px;
       background: var(--ink);
       color: var(--white);
-      font-weight: 700;
+      font-weight: 900;
     }
     .chat-head button {
       border: 0;
@@ -263,9 +428,7 @@
       font-size: 18px;
       cursor: pointer;
     }
-    .chat-body {
-      padding: 14px;
-    }
+    .chat-body { padding: 14px; }
     .chat-log {
       display: grid;
       gap: 10px;
@@ -280,26 +443,30 @@
       color: var(--ink);
       font-size: 14px;
     }
-    .bubble.user {
-      background: #e9f0ff;
-    }
+    .bubble.user { background: #f5eadf; }
     .chat-widget textarea {
       min-height: 74px;
       margin-bottom: 8px;
     }
-    .chat-minimized .chat-body {
-      display: none;
-    }
-    @media (max-width: 780px) {
-      .grid { grid-template-columns: 1fr; }
-      nav {
-        align-items: flex-start;
-        gap: 8px;
-        flex-direction: column;
+    .chat-minimized .chat-body { display: none; }
+    @media (max-width: 880px) {
+      nav { align-items: flex-start; flex-direction: column; }
+      .nav-links { flex-wrap: wrap; gap: 10px; }
+      .hero {
+        min-height: auto;
+        background:
+          linear-gradient(180deg, rgba(12, 24, 18, 0.9) 0%, rgba(12, 24, 18, 0.76) 100%),
+          url("hero-dashboard.jpg") center / cover no-repeat;
       }
-      header, section, footer { padding: 42px 16px; }
-      .intake { grid-template-columns: 1fr; }
-      .pay-grid { grid-template-columns: 1fr 1fr; }
+      .hero-inner { padding: 70px 0 78px; }
+      .trust-strip { margin-top: 0; }
+      .trust-grid, .grid-3, .workflow, .intake, .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .trust-item { border-right: 0; border-bottom: 1px solid #e6dcc8; }
+      .trust-item:last-child { border-bottom: 0; }
+      section { padding: 60px 0; }
+      .pay-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .chat-widget {
         right: 10px;
         bottom: 10px;
@@ -311,78 +478,180 @@
 <body>
   <nav>
     <div class="brand">XGbro AI</div>
-    <div class="nav-actions">海外华人商家获客自动化 | 微信 / 支付宝结算</div>
+    <div class="nav-links">
+      <a href="#workflow">交付流程</a>
+      <a href="#packages">价格</a>
+      <a href="#intake" class="nav-cta">免费检查</a>
+    </div>
   </nav>
 
   <header class="hero">
-    <div class="wrap">
-      <h1>帮海外华人本地服务商少漏询盘，多跟进客户。</h1>
-      <p>我们为搬家、清洁、装修、维修、会计、移民顾问等商家搭建简单可用的 AI 询盘捕获和客户跟进流程，让网站、邮箱、微信和表格里的客户不再散掉。</p>
+    <div class="wrap hero-inner">
+      <div class="eyebrow">Website chat + Gmail automation</div>
+      <h1>海外华人商家的 AI 客户跟进系统</h1>
+      <p>把网站咨询、Gmail、Google 商家页和客户跟进动作连起来。先做免费流程检查，再确认服务范围、交付时间和价格。</p>
       <div class="actions">
-        <a class="button" href="#intake">申请免费流程检查</a>
-        <a class="button secondary" href="#packages">查看服务价格</a>
+        <a class="button primary" href="#intake">申请免费流程检查</a>
+        <a class="button secondary" href="#workflow">看它怎么工作</a>
       </div>
     </div>
   </header>
 
+  <div class="trust-strip">
+    <div class="wrap trust-grid">
+      <div class="trust-item">
+        <strong>5分钟</strong>
+        <span>Gmail 定时检查新咨询</span>
+      </div>
+      <div class="trust-item">
+        <strong>3步</strong>
+        <span>记录、回复、安排跟进</span>
+      </div>
+      <div class="trust-item">
+        <strong>￥999</strong>
+        <span>基础启动包起步</span>
+      </div>
+      <div class="trust-item">
+        <strong>合规</strong>
+        <span>不刷评、不群发、不承诺结果</span>
+      </div>
+    </div>
+  </div>
+
   <section>
     <div class="wrap">
-      <h2>适合这些情况</h2>
-      <div class="grid">
+      <div class="section-head">
+        <div class="kicker">Where leads leak</div>
+        <h2>客户最容易漏在这些地方</h2>
+        <p>本地服务商通常不是没有客户，而是客户来得分散、回复慢、报价后没有继续跟进。</p>
+      </div>
+      <div class="grid-3">
         <div class="card">
-          <strong>客户咨询分散</strong>
-          <p>网站、邮箱、微信、电话各有一部分，没人统一记录，很容易忘记回复。</p>
+          <div class="mark">01</div>
+          <h3>多渠道咨询分散</h3>
+          <p>网站、邮箱、微信、电话各有一部分，没有统一记录，员工和老板都容易忘。</p>
         </div>
         <div class="card">
-          <strong>英文沟通费时间</strong>
-          <p>客户问价、改时间、追报价都要临时写英文，回复慢就会损失机会。</p>
+          <div class="mark">02</div>
+          <h3>报价后没人追</h3>
+          <p>客户问完价格不回，如果没有提醒和话术，很多本来可能成交的订单会自然流失。</p>
         </div>
         <div class="card">
-          <strong>没有持续跟进</strong>
-          <p>报价后没有提醒，客户不回也没人追，很多潜在订单自然流失。</p>
+          <div class="mark">03</div>
+          <h3>英文回复费时间</h3>
+          <p>每次临时写英文会慢，也不稳定。常见场景需要准备可直接发送的中英文模板。</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="band">
+  <section class="band" id="workflow">
+    <div class="wrap workflow">
+      <div>
+        <div class="kicker">Workflow</div>
+        <h2>一个轻量但能跑起来的交付流程</h2>
+        <p>先检查你已有的网站和咨询路径，再把客户记录、自动回复和后续提醒补起来。目标不是复杂系统，而是先让客户不再掉线。</p>
+        <div class="timeline">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <h3>检查网站 / Google 商家页</h3>
+              <p>找出客户在哪一步最容易放弃或没有被继续跟进。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <h3>搭建询盘记录和回复流程</h3>
+              <p>把客户来源、需求、报价状态、下一步动作放进统一表格。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div>
+              <h3>上线网站咨询和 Gmail 自动处理</h3>
+              <p>客户来信先得到及时回应，不确定内容进入草稿，方便人工确认。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Lead Follow-up Desk</h3>
+        <p style="color:#d9e5de">示例：客户来咨询后，系统先判断业务类型、记录联系方式，并安排下一步。</p>
+        <div class="lead-row">
+          <div>
+            <strong>New inquiry: moving quote</strong><br>
+            <span>Website form -> Gmail reply -> follow-up reminder</span>
+          </div>
+          <div class="pill">New</div>
+        </div>
+        <div class="lead-row">
+          <div>
+            <strong>Quote not replied</strong><br>
+            <span>Draft bilingual follow-up message</span>
+          </div>
+          <div class="pill">Draft</div>
+        </div>
+        <div class="lead-row">
+          <div>
+            <strong>Website review requested</strong><br>
+            <span>Send 3 practical fixes before payment</span>
+          </div>
+          <div class="pill">Hot</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="packages">
     <div class="wrap">
-      <h2>我们交付什么</h2>
-      <div class="steps">
-        <div class="step">
-          <div>
-            <strong>检查现有流程</strong>
-            <p>看网站、Google 页面、表单、邮箱和回复方式，找出最容易漏客户的位置。</p>
-          </div>
+      <div class="section-head">
+        <div class="kicker">Packages</div>
+        <h2>先小步启动，确认有效再加深</h2>
+        <p>付款前先确认服务范围、交付时间和金额。我们不承诺固定客户数、收入或排名，只做合规流程优化和跟进系统。</p>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>基础启动</h3>
+          <div class="price">￥999</div>
+          <p>适合第一次做客户跟进系统的商家。</p>
+          <ul>
+            <li>询盘记录表</li>
+            <li>基础回复模板</li>
+            <li>7 天调整</li>
+          </ul>
         </div>
-        <div class="step">
-          <div>
-            <strong>搭建客户跟进表</strong>
-            <p>统一记录客户需求、预算、紧急程度、报价状态和下一步动作。</p>
-          </div>
+        <div class="card">
+          <h3>增长搭建</h3>
+          <div class="price">￥2999</div>
+          <p>适合已有网站或广告流量，但跟进混乱的商家。</p>
+          <ul>
+            <li>流程检查</li>
+            <li>自动分类和提醒</li>
+            <li>中英文客户话术</li>
+          </ul>
         </div>
-        <div class="step">
-          <div>
-            <strong>生成中英文回复模板</strong>
-            <p>为新询盘、报价、未回复、预约确认等场景准备可直接使用的话术。</p>
-          </div>
-        </div>
-        <div class="step">
-          <div>
-            <strong>设置提醒和复盘</strong>
-            <p>让每个客户都有下一步，方便老板或员工每天快速处理。</p>
-          </div>
+        <div class="card">
+          <h3>月度运营</h3>
+          <div class="price">￥3000 起</div>
+          <p>适合需要持续线索整理和回复优化的团队。</p>
+          <ul>
+            <li>每周线索整理</li>
+            <li>持续优化话术</li>
+            <li>月度复盘报告</li>
+          </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="intake" class="band">
+  <section class="band" id="intake">
     <div class="wrap intake">
       <div>
-        <h2>自动接收客户咨询</h2>
-        <p>客户提交信息后，会收到自动确认邮件；商家资料也会同步发送到工作邮箱，方便后续评估网站、Google 页面和客户跟进流程。</p>
-        <p>适合先做免费流程检查，再根据实际情况选择 ￥999 基础启动包。付款二维码只用于确认服务范围后的收款。</p>
+        <div class="kicker">Free review</div>
+        <h2>发来网站或 Google 商家页，先看 3 个改进点</h2>
+        <p>我们会先判断你的业务是否适合做自动跟进，再给出最容易落地的优化建议。</p>
+        <p>适合搬家、清洁、装修、维修、会计、移民顾问、保险和咨询类本地服务商。</p>
       </div>
       <form action="https://formsubmit.co/wenwugonzuoshi@gmail.com" method="POST">
         <input type="hidden" name="_subject" value="XGbro AI 新客户流程检查申请">
@@ -410,55 +679,18 @@
         <label for="problem">现在最容易漏掉客户的地方</label>
         <textarea id="problem" name="problem" placeholder="例如：回复慢、报价后没人跟进、微信和邮箱信息太乱"></textarea>
         <button class="submit" type="submit">提交免费流程检查</button>
-        <div class="fine-print">提交后会自动发送确认邮件。服务开始前会先确认范围、交付时间和金额。</div>
+        <div class="fine-print">服务开始前会先确认范围、交付时间和金额。</div>
       </form>
     </div>
   </section>
 
-  <section id="packages">
-    <div class="wrap">
-      <h2>服务价格</h2>
-      <div class="grid">
-        <div class="card">
-          <strong>基础启动</strong>
-          <div class="price">￥999</div>
-          <p>适合第一次做客户跟进系统的商家。</p>
-          <ul>
-            <li>询盘表格</li>
-            <li>基础回复模板</li>
-            <li>7 天调整</li>
-          </ul>
-        </div>
-        <div class="card">
-          <strong>增长搭建</strong>
-          <div class="price">￥2999</div>
-          <p>适合已有网站或广告流量，但跟进混乱的商家。</p>
-          <ul>
-            <li>流程检查</li>
-            <li>自动分类和跟进提醒</li>
-            <li>中英文客户话术</li>
-          </ul>
-        </div>
-        <div class="card">
-          <strong>月度运营</strong>
-          <div class="price">￥3000 起</div>
-          <p>适合需要持续获客内容、线索整理和回复优化的团队。</p>
-          <ul>
-            <li>每周线索和回复整理</li>
-            <li>持续优化话术</li>
-            <li>月度复盘报告</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <footer>
-    <div class="wrap">
-      <h2>先做一次免费流程检查</h2>
-      <p>发来你的网站或 Google 商家页面，我们会指出 3 个最容易提升询盘转化和跟进效率的地方。</p>
-      <p>联系邮箱：wenwugonzuoshi@gmail.com | 支持微信、支付宝人民币结算</p>
-      <p>付款前请先联系确认服务范围、交付时间和金额。</p>
+    <div class="wrap footer-grid">
+      <div>
+        <h2>XGbro AI</h2>
+        <p>联系邮箱：wenwugonzuoshi@gmail.com</p>
+        <p>支持微信、支付宝人民币结算。付款前请先确认服务范围、交付时间和金额。</p>
+      </div>
       <div class="pay-grid" aria-label="付款二维码">
         <div class="pay-card">
           <img src="wechat.jpg" alt="微信收款码">
@@ -471,6 +703,7 @@
       </div>
     </div>
   </footer>
+
   <div class="chat-widget" id="chat-widget">
     <div class="chat-head">
       <span>在线咨询</span>
@@ -486,6 +719,7 @@
       <div class="fine-print">在线助手会先做初步判断；正式服务开始前会确认范围、交付时间和金额。</div>
     </div>
   </div>
+
   <script>
     const CHAT_ENDPOINT = "https://xgbro-chat.ouweiwu00009.workers.dev/";
     const widget = document.getElementById("chat-widget");
@@ -516,10 +750,6 @@
       message.value = "";
       send.disabled = true;
       try {
-        if (!CHAT_ENDPOINT) {
-          addBubble("已收到。请留下联系方式，或直接提交上方免费流程检查表。我们会根据业务类型和网站情况先做初步评估。", "bot");
-          return;
-        }
         const res = await fetch(CHAT_ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -536,4 +766,3 @@
   </script>
 </body>
 </html>
-
