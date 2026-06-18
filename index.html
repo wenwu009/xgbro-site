@@ -234,6 +234,62 @@
       color: var(--white);
     }
     footer p { color: #d7ddd8; }
+    .chat-widget {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: min(360px, calc(100vw - 36px));
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 50px rgba(23, 33, 27, 0.18);
+      overflow: hidden;
+      z-index: 20;
+    }
+    .chat-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--ink);
+      color: var(--white);
+      font-weight: 700;
+    }
+    .chat-head button {
+      border: 0;
+      background: transparent;
+      color: var(--white);
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .chat-body {
+      padding: 14px;
+    }
+    .chat-log {
+      display: grid;
+      gap: 10px;
+      max-height: 220px;
+      overflow: auto;
+      margin-bottom: 12px;
+    }
+    .bubble {
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: #eef5ed;
+      color: var(--ink);
+      font-size: 14px;
+    }
+    .bubble.user {
+      background: #e9f0ff;
+    }
+    .chat-widget textarea {
+      min-height: 74px;
+      margin-bottom: 8px;
+    }
+    .chat-minimized .chat-body {
+      display: none;
+    }
     @media (max-width: 780px) {
       .grid { grid-template-columns: 1fr; }
       nav {
@@ -244,6 +300,11 @@
       header, section, footer { padding: 42px 16px; }
       .intake { grid-template-columns: 1fr; }
       .pay-grid { grid-template-columns: 1fr 1fr; }
+      .chat-widget {
+        right: 10px;
+        bottom: 10px;
+        width: calc(100vw - 20px);
+      }
     }
   </style>
 </head>
@@ -408,6 +469,69 @@
       </div>
     </div>
   </footer>
+  <div class="chat-widget" id="chat-widget">
+    <div class="chat-head">
+      <span>在线咨询</span>
+      <button type="button" id="chat-toggle" aria-label="收起在线咨询">-</button>
+    </div>
+    <div class="chat-body">
+      <div class="chat-log" id="chat-log">
+        <div class="bubble">你好，请简单说一下业务类型、所在城市和目前获客/跟进问题。我们会先判断是否适合做免费流程检查。</div>
+      </div>
+      <textarea id="chat-message" placeholder="例如：洛杉矶搬家公司，客户从电话和网站来，但报价后经常没有继续跟进。"></textarea>
+      <input id="chat-contact" placeholder="联系方式：邮箱 / 微信 / WhatsApp">
+      <button class="submit" type="button" id="chat-send">发送咨询</button>
+      <div class="fine-print">在线助手会先做初步判断；正式服务开始前会确认范围、交付时间和金额。</div>
+    </div>
+  </div>
+  <script>
+    const CHAT_ENDPOINT = "https://xgbro-chat.ouweiwu00009.workers.dev/";
+    const widget = document.getElementById("chat-widget");
+    const toggle = document.getElementById("chat-toggle");
+    const log = document.getElementById("chat-log");
+    const message = document.getElementById("chat-message");
+    const contact = document.getElementById("chat-contact");
+    const send = document.getElementById("chat-send");
+
+    function addBubble(text, type) {
+      const div = document.createElement("div");
+      div.className = "bubble" + (type === "user" ? " user" : "");
+      div.textContent = text;
+      log.appendChild(div);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    toggle.addEventListener("click", () => {
+      widget.classList.toggle("chat-minimized");
+      toggle.textContent = widget.classList.contains("chat-minimized") ? "+" : "-";
+    });
+
+    send.addEventListener("click", async () => {
+      const text = message.value.trim();
+      const contactValue = contact.value.trim();
+      if (!text) return;
+      addBubble(text, "user");
+      message.value = "";
+      send.disabled = true;
+      try {
+        if (!CHAT_ENDPOINT) {
+          addBubble("已收到。请留下联系方式，或直接提交上方免费流程检查表。我们会根据业务类型和网站情况先做初步评估。", "bot");
+          return;
+        }
+        const res = await fetch(CHAT_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text, contact: contactValue, page: location.href })
+        });
+        const data = await res.json();
+        addBubble(data.reply || "已收到，我们会先做初步评估。", "bot");
+      } catch (err) {
+        addBubble("消息已记录。也可以提交免费流程检查表，方便我们完整评估。", "bot");
+      } finally {
+        send.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
 
