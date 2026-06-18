@@ -291,6 +291,23 @@
       font-weight: 900;
       line-height: 1;
     }
+    .payment-note {
+      margin-top: 26px;
+      padding: 22px;
+      background: var(--paper-2);
+      border: 1px solid #e6dcc8;
+      border-radius: 8px;
+    }
+    .payment-note summary {
+      cursor: pointer;
+      color: var(--ink);
+      font-weight: 900;
+    }
+    .payment-note p {
+      margin-top: 10px;
+      margin-bottom: 0;
+      font-size: 15px;
+    }
     ul {
       margin: 16px 0 0;
       padding: 0;
@@ -368,21 +385,16 @@
       color: var(--white);
     }
     footer p { color: #d7ddd8; }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 28px;
-      align-items: end;
-    }
     .pay-grid {
       display: grid;
       grid-template-columns: repeat(2, 150px);
       gap: 14px;
+      margin-top: 16px;
     }
     .pay-card {
       padding: 10px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: var(--white);
+      border: 1px solid var(--line);
       border-radius: 8px;
     }
     .pay-card img {
@@ -395,7 +407,7 @@
     .pay-card span {
       display: block;
       margin-top: 7px;
-      color: #eef5ed;
+      color: var(--muted);
       font-size: 13px;
       text-align: center;
     }
@@ -460,7 +472,7 @@
       }
       .hero-inner { padding: 70px 0 78px; }
       .trust-strip { margin-top: 0; }
-      .trust-grid, .grid-3, .workflow, .intake, .footer-grid {
+      .trust-grid, .grid-3, .workflow, .intake {
         grid-template-columns: 1fr;
       }
       .trust-item { border-right: 0; border-bottom: 1px solid #e6dcc8; }
@@ -542,6 +554,20 @@
           <p>每次临时写英文会慢，也不稳定。常见场景需要准备可直接发送的中英文模板。</p>
         </div>
       </div>
+      <details class="payment-note">
+        <summary>确认服务范围后，可使用微信或支付宝付款</summary>
+        <p>二维码只用于双方确认服务内容、交付时间和金额后的收款。免费流程检查阶段不需要付款。</p>
+        <div class="pay-grid" aria-label="付款二维码">
+          <div class="pay-card">
+            <img src="wechat.jpg" alt="微信收款码">
+            <span>微信支付</span>
+          </div>
+          <div class="pay-card">
+            <img src="alipay.jpg" alt="支付宝收款码">
+            <span>支付宝</span>
+          </div>
+        </div>
+      </details>
     </div>
   </section>
 
@@ -685,21 +711,11 @@
   </section>
 
   <footer>
-    <div class="wrap footer-grid">
+    <div class="wrap">
       <div>
         <h2>XGbro AI</h2>
         <p>联系邮箱：wenwugonzuoshi@gmail.com</p>
         <p>支持微信、支付宝人民币结算。付款前请先确认服务范围、交付时间和金额。</p>
-      </div>
-      <div class="pay-grid" aria-label="付款二维码">
-        <div class="pay-card">
-          <img src="wechat.jpg" alt="微信收款码">
-          <span>微信支付</span>
-        </div>
-        <div class="pay-card">
-          <img src="alipay.jpg" alt="支付宝收款码">
-          <span>支付宝</span>
-        </div>
       </div>
     </div>
   </footer>
